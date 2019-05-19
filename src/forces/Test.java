@@ -99,6 +99,9 @@ public class Test {
         force1.attach(new Battery(FRANCE,hex));
         force1.distributeFood(560);
         list(force1);
+        System.out.println("To Unload 10");
+        force1.unloadFood(10);
+        list(force1);
 
 
 
