@@ -103,7 +103,11 @@ public class Test {
         force1.unloadFood(10);
         list(force1);
 
-
+        Unit battalion4 = new Battalion(FRANCE, hex);
+        battalion4.strength = 100;
+        force1.getReplenished(battalion4);
+        System.out.println("REPLENISHED 3rd BATTALION!");
+        list(force1);
 
     }
 

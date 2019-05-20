@@ -77,6 +77,22 @@ public class Force {
 
         return force;
     }
+
+    public Unit getReplenished(Unit unit) {
+        if (isUnit) return ((Unit)this).getReplenished(unit);
+        else {
+            for (Force force: forces) {
+                if (unit == null) break;
+                if (force.isUnit && ((Unit)force).type ==  unit.type) {
+                    return ((Unit)force).getReplenished(unit);
+                }
+                else {
+                    force.getReplenished(unit);
+                }
+            }
+        }
+        return unit;
+    }
     // the methods takes into account Super Forces
     private void include(Force force) {
         double x = xp * strength;
@@ -118,6 +134,23 @@ public class Force {
         if (isSub) {
             superForce.include(force);
         }
+    }
+
+    public void getReinforced(int s, double x, double m, double f, double fStock, double aStock,
+                              double fNeed, double aNeed, double fLimit, double aLimit) {
+        xp = (xp * strength + x * s) / (strength + s);
+        morale = (morale * strength + m * s) / (strength + s);
+        fatigue = (fatigue * strength + f * s) / (strength + s);
+
+        strength += s;
+        foodStock += fStock;
+        ammoStock += aStock;
+        foodNeed += fNeed;
+        ammoNeed += aNeed;
+        foodLimit += fLimit;
+        ammoLimit += aLimit;
+
+        if (isSub) superForce.getReinforced(s, x, m, f, fStock, aStock, fNeed, aNeed, fLimit, aLimit);
     }
     // the methods takes into account Super Forces
     private void exclude(Force force) {

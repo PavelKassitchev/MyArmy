@@ -14,24 +14,17 @@ public abstract class Unit extends Force{
         super(nation, hex);
     }
 
+    @Override
     public Unit getReplenished(Unit unit) {
         if (unit.type == type) {
             int replenish = maxStrength - strength;
             if (unit.strength < replenish) {
                 replenish = unit.strength;
             }
-            double ratio = replenish / unit.strength;
+            double ratio = (double)(replenish / unit.strength);
+            getReinforced(replenish, unit.xp, unit.morale, unit.fatigue, unit.foodStock * ratio, unit.ammoStock * ratio,
+                    unit.foodNeed * ratio, unit.ammoNeed * ratio, unit.foodLimit * ratio, unit.ammoLimit * ratio);
 
-            xp = (xp * strength + replenish * unit.xp) / (strength + replenish);
-            morale = (morale * strength + replenish * unit.morale) / (strength + replenish);
-            fatigue = (fatigue * strength + replenish * unit.fatigue) / (strength + replenish);
-
-            foodStock += unit.foodStock * ratio;
-            ammoStock += unit.ammoStock * ratio;
-            foodNeed += unit.foodNeed * ratio;
-            ammoNeed += unit.ammoNeed * ratio;
-            foodLimit += unit.foodLimit * ratio;
-            ammoLimit += unit.ammoLimit * ratio;
 
             unit.foodStock *= (1 - ratio);
             unit.ammoStock *= (1 - ratio);
@@ -40,7 +33,6 @@ public abstract class Unit extends Force{
             unit.foodLimit *= (1 - ratio);
             unit.ammoLimit *= (1 - ratio);
 
-            strength += replenish;
             unit.strength -= replenish;
 
         }
