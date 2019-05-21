@@ -14,6 +14,7 @@ public abstract class Unit extends Force{
         super(nation, hex);
     }
 
+
     @Override
     public Unit getReplenished(Unit unit) {
         if (unit.type == type) {
@@ -45,5 +46,26 @@ public abstract class Unit extends Force{
             if (type == types[i]) return true;
         }
         return false;
+    }
+
+    public Unit bearLoss(double ratio) {
+        int s = (int)(strength * ratio);
+        double fS = foodStock * ratio;
+        double aS = ammoStock * ratio;
+        double fN = foodNeed * ratio;
+        double aN = ammoNeed * ratio;
+        double fL = foodLimit * ratio;
+        double aL = ammoLimit * ratio;
+        strength -= s;
+        foodStock -= fS;
+        ammoStock -= aS;
+        foodNeed -= fN;
+        ammoNeed -= aN;
+        foodLimit -= fL;
+        ammoLimit -= aL;
+
+        if (isSub) superForce.getReinforced(-s, this.xp, this.morale, this.fatigue, - fS, -aS, -fN, -aN, -fL, -aL);
+
+        return this;
     }
 }
