@@ -109,6 +109,28 @@ public class Test {
         System.out.println("REPLENISHED 3rd BATTALION!");
         list(force1);
 
+        System.out.println();
+        System.out.println("LOSSES!");
+        System.out.println();
+
+        Unit u1 = new Battalion(FRANCE, hex, 600);
+        u1.name = "Battalion";
+        Unit u2 = new Battery(FRANCE, hex, 80);
+        u2.name = "Battery";
+        Force div = new Force(u1, u2);
+        div.name = "Division";
+        Unit u3 = new Squadron(FRANCE, hex);
+        u3.name = "Squandron";
+        Force corps = new Force (div, u3);
+        corps.name = "Corps";
+        list(corps);
+        System.out.println();
+        System.out.println("DO IT");
+        System.out.println();
+        u1.bearLoss(0.1);
+        u3.bearLoss(0.2);
+        list(corps);
+
     }
 
     private static void list(Force force) {

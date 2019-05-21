@@ -9,18 +9,21 @@ public class Battery extends Unit {
     public final static double AMMO_LIMIT = 5;
 
     public Battery(Nation nation, Hex hex) {
+        this(nation, hex, MAX_STRENGTH);
+    }
+    public Battery(Nation nation, Hex hex, int strength) {
         super(nation, hex);
         isUnit = true;
         type = ARTILLERY;
         maxStrength = MAX_STRENGTH;
-        strength = MAX_STRENGTH;
+        this.strength = strength;
         speed = SPEED;
-        foodNeed = FOOD_NEED;
-        ammoNeed = AMMO_NEED;
-        foodLimit = FOOD_LIMIT;
-        ammoLimit = AMMO_LIMIT;
-        foodStock = FOOD_LIMIT;
-        ammoStock = AMMO_LIMIT;
+        foodNeed = FOOD_NEED * strength / maxStrength;
+        ammoNeed = AMMO_NEED * strength / maxStrength;
+        foodLimit = FOOD_LIMIT * strength / maxStrength;
+        ammoLimit = AMMO_LIMIT * strength / maxStrength;
+        foodStock = FOOD_LIMIT * strength / maxStrength;
+        ammoStock = AMMO_LIMIT * strength / maxStrength;
         xp = 0;
         fatigue = 0;
         morale = nation.getNationalMorale();

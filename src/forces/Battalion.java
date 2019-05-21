@@ -9,18 +9,22 @@ public class Battalion extends Unit {
     public final static double AMMO_LIMIT = 4;
 
     public Battalion (Nation nation, Hex hex) {
+        this(nation, hex, MAX_STRENGTH);
+    }
+
+    public Battalion (Nation nation, Hex hex, int strength) {
         super(nation, hex);
         isUnit = true;
         type = INFANTRY;
         maxStrength = MAX_STRENGTH;
-        strength = MAX_STRENGTH;
+        this.strength = strength;
         speed = SPEED;
-        foodNeed = FOOD_NEED;
-        ammoNeed = AMMO_NEED;
-        foodLimit = FOOD_LIMIT;
-        ammoLimit = AMMO_LIMIT;
-        foodStock = FOOD_LIMIT;
-        ammoStock = AMMO_LIMIT;
+        foodNeed = FOOD_NEED * strength / maxStrength;
+        ammoNeed = AMMO_NEED * strength / maxStrength;
+        foodLimit = FOOD_LIMIT * strength / maxStrength;
+        ammoLimit = AMMO_LIMIT * strength / maxStrength;
+        foodStock = FOOD_LIMIT * strength / maxStrength;
+        ammoStock = AMMO_LIMIT * strength / maxStrength;
         xp = 0;
         fatigue = 0;
         morale = nation.getNationalMorale();
