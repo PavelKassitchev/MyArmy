@@ -7,6 +7,8 @@ public class Battalion extends Unit {
     public final static double AMMO_NEED = 1;
     public final static double FOOD_LIMIT = 12;
     public final static double AMMO_LIMIT = 4;
+    public final static double FIRE = 1;
+    public final static double CHARGE = 1;
 
     public Battalion (Nation nation, Hex hex) {
         this(nation, hex, MAX_STRENGTH);
@@ -25,6 +27,8 @@ public class Battalion extends Unit {
         ammoLimit = AMMO_LIMIT * strength / maxStrength;
         foodStock = FOOD_LIMIT * strength / maxStrength;
         ammoStock = AMMO_LIMIT * strength / maxStrength;
+        fire = FIRE  * strength / maxStrength;
+        charge = CHARGE * strength / maxStrength;
         xp = 0;
         fatigue = 0;
         morale = nation.getNationalMorale();

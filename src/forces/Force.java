@@ -35,6 +35,9 @@ public class Force {
     double foodLimit;
     double ammoLimit;
 
+    double fire;
+    double charge;
+
     double speed;
 
     //STATIC SECTION
@@ -118,6 +121,8 @@ public class Force {
         ammoNeed += force.ammoNeed;
         foodStock += force.foodStock;
         ammoStock += force.ammoStock;
+        fire += force.fire;
+        charge += force.charge;
 
         x += force.strength * force.xp;
         m += force.strength * force.morale;
@@ -137,7 +142,7 @@ public class Force {
     }
 
     public void getReinforced(int s, double x, double m, double f, double fStock, double aStock,
-                              double fNeed, double aNeed, double fLimit, double aLimit) {
+                              double fNeed, double aNeed, double fLimit, double aLimit, double fi, double c) {
         xp = (xp * strength + x * s) / (strength + s);
         morale = (morale * strength + m * s) / (strength + s);
         fatigue = (fatigue * strength + f * s) / (strength + s);
@@ -149,21 +154,25 @@ public class Force {
         ammoNeed += aNeed;
         foodLimit += fLimit;
         ammoLimit += aLimit;
+        fire += fi;
+        charge += c;
 
-        if (isSub) superForce.getReinforced(s, x, m, f, fStock, aStock, fNeed, aNeed, fLimit, aLimit);
+        if (isSub) superForce.getReinforced(s, x, m, f, fStock, aStock, fNeed, aNeed, fLimit, aLimit, fi, c);
     }
     // the methods takes into account Super Forces
     private void exclude(Force force) {
         double x = xp * strength;
         double m = morale * strength;
         double f = fatigue * strength;
-        strength = strength - force.strength;
-        foodLimit = foodLimit - force.foodLimit;
-        ammoLimit = ammoLimit - force.ammoLimit;
-        foodNeed = foodNeed - force.foodNeed;
-        ammoNeed = ammoNeed - force.ammoNeed;
-        foodStock = foodStock - force.foodStock;
-        ammoStock = ammoStock - force.ammoStock;
+        strength -= force.strength;
+        foodLimit -= force.foodLimit;
+        ammoLimit -= force.ammoLimit;
+        foodNeed -= force.foodNeed;
+        ammoNeed -= force.ammoNeed;
+        foodStock -= force.foodStock;
+        ammoStock -= force.ammoStock;
+        fire -= force.fire;
+        charge -= force.charge;
 
 
         xp = (x - force.xp * force.strength) / strength;

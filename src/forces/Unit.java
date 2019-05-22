@@ -24,7 +24,8 @@ public abstract class Unit extends Force{
             }
             double ratio = (double)(replenish / unit.strength);
             getReinforced(replenish, unit.xp, unit.morale, unit.fatigue, unit.foodStock * ratio, unit.ammoStock * ratio,
-                    unit.foodNeed * ratio, unit.ammoNeed * ratio, unit.foodLimit * ratio, unit.ammoLimit * ratio);
+                    unit.foodNeed * ratio, unit.ammoNeed * ratio, unit.foodLimit * ratio, unit.ammoLimit * ratio,
+                    unit.fire * ratio, unit.charge * ratio);
 
 
             unit.foodStock *= (1 - ratio);
@@ -33,6 +34,8 @@ public abstract class Unit extends Force{
             unit.ammoNeed *= (1 - ratio);
             unit.foodLimit *= (1 - ratio);
             unit.ammoLimit *= (1 - ratio);
+            unit.fire *= (1 - ratio);
+            unit.charge *= (1 - ratio);
 
             unit.strength -= replenish;
 
@@ -56,6 +59,8 @@ public abstract class Unit extends Force{
         double aN = ammoNeed * ratio;
         double fL = foodLimit * ratio;
         double aL = ammoLimit * ratio;
+        double f = fire * ratio;
+        double  c = charge * ratio;
         strength -= s;
         foodStock -= fS;
         ammoStock -= aS;
@@ -63,8 +68,10 @@ public abstract class Unit extends Force{
         ammoNeed -= aN;
         foodLimit -= fL;
         ammoLimit -= aL;
+        fire -= f;
+        charge -= c;
 
-        if (isSub) superForce.getReinforced(-s, this.xp, this.morale, this.fatigue, - fS, -aS, -fN, -aN, -fL, -aL);
+        if (isSub) superForce.getReinforced(-s, this.xp, this.morale, this.fatigue, - fS, -aS, -fN, -aN, -fL, -aL, -f, -c);
 
         return this;
     }
