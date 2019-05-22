@@ -105,6 +105,7 @@ public class Test {
 
         Unit battalion4 = new Battalion(FRANCE, hex);
         battalion4.strength = 100;
+        battalion4.name = "Inf.volonteers";
         force1.getReplenished(battalion4);
         System.out.println("REPLENISHED 3rd BATTALION!");
         list(force1);
@@ -137,14 +138,22 @@ public class Test {
         Unit a4 = new Squadron(AUSTRIA, hex, 100);
         Force aus = new Force(a1, a2, a3, a4);
 
-        System.out.println("Austria");
-        System.out.println("defender fire = " + aus.fire);
-        System.out.println("attacker fire = " + force1.fire);
+        System.out.println();
+        System.out.println("BEFORE BATTLE");
+        //force3.detach(wagon2);
+        force1.throwWagons();
+        System.out.println("defender fire = " + aus.fire + " charge = " + aus.charge);
+        System.out.println("attacker fire = " + force1.fire + " charge = " + force1.charge);
+        list(force1);
         list(aus);
         System.out.println();
         System.out.println("BATTLE");
         System.out.println();
-        new Battle(force1, aus).resolve();
+        Battle battle = new Battle(force1, aus);
+        battle.resolveStage();
+        battle.resolveStage();
+        battle.resolveStage();
+        list(force1);
         list(aus);
 
     }

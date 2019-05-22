@@ -75,4 +75,10 @@ public abstract class Unit extends Force{
 
         return this;
     }
+
+    public Unit changeMorale (double change) {
+        morale += change;
+        if (isSub) superForce.moralize(strength, change);
+        return this;
+    }
 }
