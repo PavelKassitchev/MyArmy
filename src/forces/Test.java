@@ -131,6 +131,22 @@ public class Test {
         u3.bearLoss(0.2);
         list(corps);
 
+        Unit a1 = new Battalion(AUSTRIA, hex);
+        Unit a2 = new Squadron(AUSTRIA, hex);
+        Unit a3 = new Battery(AUSTRIA, hex);
+        Unit a4 = new Squadron(AUSTRIA, hex, 100);
+        Force aus = new Force(a1, a2, a3, a4);
+
+        System.out.println("Austria");
+        System.out.println("defender fire = " + aus.fire);
+        System.out.println("attacker fire = " + force1.fire);
+        list(aus);
+        System.out.println();
+        System.out.println("BATTLE");
+        System.out.println();
+        new Battle(force1, aus).resolve();
+        list(aus);
+
     }
 
     private static void list(Force force) {

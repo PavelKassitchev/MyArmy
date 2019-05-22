@@ -8,6 +8,11 @@ public enum Nation {
     RUSSIA;
 
     private float nationalMorale;
+    static
+    {
+        FRANCE.nationalMorale = 1;
+        AUSTRIA.nationalMorale = 1;
+    }
 
     public float getNationalMorale() {
         return nationalMorale;
