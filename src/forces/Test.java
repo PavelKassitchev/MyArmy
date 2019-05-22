@@ -136,24 +136,26 @@ public class Test {
         Unit a2 = new Squadron(AUSTRIA, hex);
         Unit a3 = new Battery(AUSTRIA, hex);
         Unit a4 = new Squadron(AUSTRIA, hex, 100);
-        Force aus = new Force(a1, a2, a3, a4);
+        Force aus = new Force(a2);
 
         System.out.println();
         System.out.println("BEFORE BATTLE");
-        //force3.detach(wagon2);
+        Force fr = new Force(new Battalion(FRANCE, hex));
+        //fr.attach(new Squadron(FRANCE, hex));
+        force3.detach(wagon2);
         force1.throwWagons();
         System.out.println("defender fire = " + aus.fire + " charge = " + aus.charge);
-        System.out.println("attacker fire = " + force1.fire + " charge = " + force1.charge);
-        list(force1);
+        System.out.println("attacker fire = " + fr.fire + " charge = " + fr.charge);
+        list(fr);
         list(aus);
         System.out.println();
         System.out.println("BATTLE");
         System.out.println();
-        Battle battle = new Battle(force1, aus);
+        Battle battle = new Battle(fr, aus);
         battle.resolveStage();
         battle.resolveStage();
         battle.resolveStage();
-        list(force1);
+        list(fr);
         list(aus);
 
     }
