@@ -160,6 +160,12 @@ public class Force {
         if (isSub) superForce.getReinforced(s, x, m, f, fStock, aStock, fNeed, aNeed, fLimit, aLimit, fi, c);
     }
     // the methods takes into account Super Forces
+    public void moralize(double s, double change) {
+        double c = s * change / strength;
+        morale += c;
+        if (isSub) superForce.moralize(strength, c);
+    }
+
     private void exclude(Force force) {
         double x = xp * strength;
         double m = morale * strength;

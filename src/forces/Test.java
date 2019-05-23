@@ -144,26 +144,56 @@ public class Test {
         System.out.println();
         System.out.println("BATTLE");
         System.out.println();
-        new Battle(force1, aus).resolve();
+        new Battle(force1, aus).resolveStage();
         list(aus);
-
+        Force france = createForce(FRANCE,2, 0, 1);
+        Force austria = createForce(AUSTRIA, 3, 0,0);
+        Battle battle = new Battle(france, austria);
+        battle.resolveStage();
+        battle.resolveStage();
+        battle.resolveStage();
+        battle.resolveStage();
+        list(france);
+        list(austria);
     }
 
     private static void list(Force force) {
         System.out.println(force.name);
         System.out.println(force.nation);
         System.out.println("Totally soldiers: " + force.strength + ", Morale level: " + force.morale + " speed: " + force.speed +
-                " FOOD: " + force.foodStock +" foodNeed: "+ force.foodNeed + " foodLimit " + force.foodLimit);
+                " FOOD: " + force.foodStock +" foodNeed: "+ force.foodNeed + " foodLimit " + force.foodLimit + " fire : " + force.fire + " charge: " +
+                force.charge);
         System.out.println("Including: ");
         System.out.println();
         for (Force f: force.forces) {
             if (f.isUnit) {
                 System.out.println("    " + f.name + ": " + f.strength + " soldiers, Morale level: " + f.morale + " speed: " + f.speed +
-                        " FOOD: " + f.foodStock + " Food Need " + f.foodNeed + " foodlimit " + f.foodLimit);
+                        " FOOD: " + f.foodStock + " Food Need " + f.foodNeed + " foodlimit " + f.foodLimit + " fire: " + f.fire + " charge: " + f.charge);
             }
             else {
                 list(f);
             }
         }
+    }
+
+    private static Force createForce(Nation nation, int i, int c, int a) {
+        Force force = new Force(nation, hex);
+        for (int count = 0; count < i; count++) {
+            Unit u = new Battalion(nation, hex);
+            System.out.println("Battalion!");
+            force.attach(u);
+        }
+        for (int count = 0; count < c; count++) {
+            Unit u =  new Squadron(nation, hex);
+            System.out.println("Squadron!");
+            force.attach(u);
+        }
+        for (int count = 0; count < a; count++) {
+            Unit u = new Battery(nation, hex);
+            System.out.println("Battery!");
+            force.attach(u);
+        }
+        list(force);
+        return force;
     }
 }
