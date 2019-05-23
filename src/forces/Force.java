@@ -1,6 +1,7 @@
 package forces;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static forces.Unit.*;
@@ -41,6 +42,8 @@ public class Force {
     double speed;
 
     //STATIC SECTION
+
+    //TODO exclude SUPPLY morale and xp
 
     public Force(Nation nation, Hex hex) {
         this.nation = nation;
@@ -205,6 +208,22 @@ public class Force {
             superForce.exclude(force);
         }
 
+    }
+
+    //this methods shows morale change dependency on inside Unit morale change
+
+    public void moralize(int strength, double change) {
+        double sChange = change * strength / this.strength;
+        morale += sChange;
+        if (isSub) superForce.moralize(this.strength, sChange);
+    }
+
+    public void throwWagons() {
+        List<Wagon> toThrow = new ArrayList<>(wagons);
+
+        for (Wagon wagon: toThrow) {
+            wagon.superForce.detach(wagon);
+        }
     }
 
     //This method distributs all ammo of the force plus extra ammo (argument double ammo) between all the units and sub-forces
