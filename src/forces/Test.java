@@ -146,11 +146,12 @@ public class Test {
         System.out.println();
         new Battle(force1, aus).resolveStage();
         list(aus);
-        Force france = createForce(FRANCE,5, 0, 0);
-        Force austria = createForce(AUSTRIA, 5, 1, 0);
+        Force france = createForce(FRANCE,12, 1, 6);
+        Force austria = createForce(AUSTRIA, 10, 8, 0);
         Battle battle = new Battle(france, austria);
+        //battle.resolve();
         battle.resolveStage();
-        //battle.resolveStage();
+        battle.resolveStage();
         //battle.resolveStage();
         //battle.resolveStage();
         //battle.resolveStage();
@@ -158,7 +159,7 @@ public class Test {
         list(austria);
     }
 
-    private static void list(Force force) {
+    static void list(Force force) {
         System.out.println(force.name);
         System.out.println(force.nation);
         System.out.println("Totally soldiers: " + force.strength + ", Morale level: " + force.morale + " speed: " + force.speed +
