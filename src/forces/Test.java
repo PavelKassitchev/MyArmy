@@ -146,8 +146,8 @@ public class Test {
         System.out.println();
         new Battle(force1, aus).resolveStage();
         list(aus);
-        Force france = createForce(FRANCE,12, 1, 6);
-        Force austria = createForce(AUSTRIA, 10, 8, 0);
+        Force france = createForce(FRANCE,12, 1, 6, 1.1);
+        Force austria = createForce(AUSTRIA, 14, 0, 4);
         Battle battle = new Battle(france, austria);
         //battle.resolve();
         battle.resolveStage();
@@ -182,20 +182,40 @@ public class Test {
         Force force = new Force(nation, hex);
         for (int count = 0; count < i; count++) {
             Unit u = new Battalion(nation, hex);
-            System.out.println("Battalion!");
+
             force.attach(u);
         }
         for (int count = 0; count < c; count++) {
             Unit u =  new Squadron(nation, hex);
-            System.out.println("Squadron!");
+
             force.attach(u);
         }
         for (int count = 0; count < a; count++) {
             Unit u = new Battery(nation, hex);
-            System.out.println("Battery!");
+
             force.attach(u);
         }
-        list(force);
+
+        return force;
+    }
+    private static Force createForce(Nation nation, int i, int c, int a,double m) {
+        Force force = new Force(nation, hex);
+        for (int count = 0; count < i; count++) {
+            Unit u = new Battalion(nation, hex);
+            u.morale = m;
+            force.attach(u);
+        }
+        for (int count = 0; count < c; count++) {
+            Unit u =  new Squadron(nation, hex);
+            u.morale = m;
+            force.attach(u);
+        }
+        for (int count = 0; count < a; count++) {
+            Unit u = new Battery(nation, hex);
+            u.morale = m;
+            force.attach(u);
+        }
+
         return force;
     }
 }

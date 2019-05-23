@@ -1,6 +1,6 @@
 package forces;
 
-public abstract class Unit extends Force{
+public abstract class Unit extends Force {
 
     public static final int SUPPLY = 0;
     public static final int INFANTRY = 1;
@@ -22,7 +22,7 @@ public abstract class Unit extends Force{
             if (unit.strength < replenish) {
                 replenish = unit.strength;
             }
-            double ratio = (double)(replenish / unit.strength);
+            double ratio = (double) (replenish / unit.strength);
             getReinforced(replenish, unit.xp, unit.morale, unit.fatigue, unit.foodStock * ratio, unit.ammoStock * ratio,
                     unit.foodNeed * ratio, unit.ammoNeed * ratio, unit.foodLimit * ratio, unit.ammoLimit * ratio,
                     unit.fire * ratio, unit.charge * ratio);
@@ -52,7 +52,7 @@ public abstract class Unit extends Force{
     }
 
     public Unit bearLoss(double ratio) {
-        int s = (int)(strength * ratio);
+        int s = (int) (strength * ratio);
         double fS = foodStock * ratio;
         double aS = ammoStock * ratio;
         double fN = foodNeed * ratio;
@@ -60,7 +60,7 @@ public abstract class Unit extends Force{
         double fL = foodLimit * ratio;
         double aL = ammoLimit * ratio;
         double f = fire * ratio;
-        double  c = charge * ratio;
+        double c = charge * ratio;
         strength -= s;
         foodStock -= fS;
         ammoStock -= aS;
@@ -71,7 +71,8 @@ public abstract class Unit extends Force{
         fire -= f;
         charge -= c;
 
-        if (isSub) superForce.getReinforced(-s, this.xp, this.morale, this.fatigue, - fS, -aS, -fN, -aN, -fL, -aL, -f, -c);
+        if (isSub)
+            superForce.getReinforced(-s, this.xp, this.morale, this.fatigue, -fS, -aS, -fN, -aN, -fL, -aL, -f, -c);
 
         return this;
     }
