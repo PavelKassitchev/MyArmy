@@ -146,13 +146,14 @@ public class Test {
         System.out.println();
         new Battle(force1, aus).resolveStage();
         list(aus);
-        Force france = createForce(FRANCE,2, 0, 1);
-        Force austria = createForce(AUSTRIA, 3, 0,0);
+        Force france = createForce(FRANCE,5, 0, 0);
+        Force austria = createForce(AUSTRIA, 5, 1, 0);
         Battle battle = new Battle(france, austria);
         battle.resolveStage();
-        battle.resolveStage();
-        battle.resolveStage();
-        battle.resolveStage();
+        //battle.resolveStage();
+        //battle.resolveStage();
+        //battle.resolveStage();
+        //battle.resolveStage();
         list(france);
         list(austria);
     }

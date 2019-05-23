@@ -12,8 +12,9 @@ public class Battle {
     public String resolveStage() {
         double fireEffectDef = 40 * attacker.fire / defender.strength;
         double fireEffectAtt = 40 * defender.fire / attacker.strength;
-        double moraleEffectDef = - (fireEffectDef + 40 * attacker.charge * attacker.morale / (defender.strength * defender.morale));
-        double moraleEffectAtt = - (fireEffectAtt + 40 * defender.charge * defender.morale / (attacker.strength * attacker.morale));
+        double moraleEffectDef = - (3.3 * fireEffectDef + 30 * attacker.charge / defender.strength);
+        double moraleEffectAtt = - (3.3 * fireEffectAtt + 30 * defender.charge / attacker.strength);
+
         StringBuilder result = new StringBuilder("Victory of ");
 
         for (Battalion b: defender.battalions) {

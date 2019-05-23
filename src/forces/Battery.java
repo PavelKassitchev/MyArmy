@@ -7,8 +7,8 @@ public class Battery extends Unit {
     public final static double AMMO_NEED = 2;
     public final static double FOOD_LIMIT = 8;
     public final static double AMMO_LIMIT = 5;
-    public final  static double FIRE = 2.1;
-    public final static double CHARGE = 0.1;
+    public final  static double FIRE = 3.5;
+    public final static double CHARGE = 0.0;
 
     public Battery(Nation nation, Hex hex) {
         this(nation, hex, MAX_STRENGTH);
