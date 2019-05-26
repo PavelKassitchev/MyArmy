@@ -8,8 +8,8 @@ public class Test {
     static Hex hex = new Hex();
     public static void main(String[] args) {
 
-        Force france = createForce(FRANCE,5, 3, 2);
-        Force austria = createForce(AUSTRIA, 5, 2, 2);
+        Force france = createForce(FRANCE,5, 3, 0);
+        Force austria = createForce(AUSTRIA, 7, 0, 0);
         Force f = new Force(new Squadron(FRANCE, hex), new Squadron(FRANCE, hex));
         //france.attach(f);
         System.out.println("Before the battle");
@@ -25,10 +25,10 @@ public class Test {
         //battle.resolveStage();
         //battle.resolveStage();
         //battle.resolveStage();
-        /*System.out.println("After the battle");
+        System.out.println("After the battle");
         System.out.println();
         list(france);
-        list(austria);*/
+        list(austria);
     }
 
     public static void getStat(Force attacker, Force defender) {

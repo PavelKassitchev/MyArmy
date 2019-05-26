@@ -8,7 +8,7 @@ public class Squadron extends Unit {
     public final static double FOOD_LIMIT = 12;
     public final static double AMMO_LIMIT = 4;
     public final static double FIRE = 0.17;
-    public final static double CHARGE = 1.5;
+    public final static double CHARGE = 4;
 
     public Squadron(Nation nation, Hex hex) {
         this(nation, hex, MAX_STRENGTH);

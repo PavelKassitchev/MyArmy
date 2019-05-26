@@ -45,25 +45,53 @@ public class Battle {
             s = resolveStage();
             count++;
         }
-        int attackerEnd = attacker.strength;
-        int defenderEnd = defender.strength;
+
         int attackerRooted = 0;
         int defenderRooted = 0;
-        for (Unit unit : rootedDef) defenderRooted += unit.strength;
 
-        for (Unit unit : rootedAtt) attackerRooted += unit.strength;
+
+
 
         if (winner == 1) {
+            for (Unit unit : rootedDef) defenderRooted += unit.strength;
             System.out.println("Attacker took prisoners: " + pursuit(defenderRooted));
+            for (Battalion unit: attacker.battalions) unit.changeMorale(0.5);
+            for (Squadron unit: attacker.squadrons) unit.changeMorale(0.5);
+            for (Battery unit: attacker.batteries) unit.changeMorale(0.5);
+            for (Unit unit: rootedAtt) {
+                unit.changeMorale(0.2);
+                if (unit.morale > 0) {
+                    attacker.attach(unit);
+
+                }
+                else {
+                    attackerRooted += unit.strength;
+                }
+            }
+
         }
         else {
+            for (Unit unit : rootedAtt) attackerRooted += unit.strength;
             System.out.println("Defender took prisoners: " + pursuit(attackerRooted));
+            for (Battalion unit: defender.battalions) unit.changeMorale(0.5);
+            for (Squadron unit: defender.squadrons) unit.changeMorale(0.5);
+            for (Battery unit: defender.batteries) unit.changeMorale(0.5);
+            for (Unit unit: rootedDef) {
+                unit.changeMorale(0.2);
+                if (unit.morale > 0) {
+                    defender.attach(unit);
+
+                }
+                else {
+                    defenderRooted += unit.strength;
+                }
+            }
         }
 
-        System.out.println("ATTACKER: Initial - " + attackerInit + " Casualities - " + (attackerInit - attackerEnd - attackerRooted) +
-                " Percentage - " + (attackerInit - attackerEnd - attackerRooted) * 100 / attackerInit + " Rooted - " + attackerRooted);
-        System.out.println("DEFENDER: Initial - " + defenderInit + " Casualities - " + (defenderInit - defenderEnd - defenderRooted) +
-                " Percentage - " + (defenderInit - defenderEnd - defenderRooted) * 100 / defenderInit + " Rooted - " + defenderRooted);
+        System.out.println("ATTACKER: Initial - " + attackerInit + " Casualities - " + (attackerInit - attacker.strength - attackerRooted) +
+                " Percentage - " + (attackerInit - attacker.strength - attackerRooted) * 100 / attackerInit + " Rooted - " + attackerRooted);
+        System.out.println("DEFENDER: Initial - " + defenderInit + " Casualities - " + (defenderInit - defender.strength - defenderRooted) +
+                " Percentage - " + (defenderInit - defender.strength - defenderRooted) * 100 / defenderInit + " Rooted - " + defenderRooted);
         System.out.println("Number of stages: " + count);
         System.out.println("WINNER = " + winner);
         System.out.println();
@@ -85,7 +113,7 @@ public class Battle {
                 for (Force force : unit.superForce.forces) {
                     if (force.isUnit && force != unit) {
                         ((Unit) force).changeMorale(-0.03);
-                        if (force.morale <= 0) rooted.add((Unit) force);
+                        if (force.morale <= 0.2) rooted.add((Unit) force);
                         selectRandomUnit(opponent).changeMorale(0.02);
                     }
                 }
@@ -156,6 +184,18 @@ public class Battle {
                     System.out.println(b.name + " " + b.nation + " hit, morale = " + b.morale);
                 }
             }
+            if (rootedDef.size() > 0) {
+
+                for (Unit unit : rootedDef) {
+                    if (unit.isSub) unit.superForce.detach(unit);
+
+                }
+                if (defender.strength < defenderInit * 0.4) {
+                    winner = 1;
+
+                    return result.toString();
+                }
+            }
             for (int i = 0; i < attackerStep; i++) {
                 if (attIterator.hasNext()) {
                     Unit b = attIterator.next();
@@ -167,24 +207,17 @@ public class Battle {
                 }
 
             }
-            if (rootedDef.size() > 0) {
 
-                for (Unit unit : rootedDef) {
-                    if (unit.isSub) unit.superForce.detach(unit);
-
-                }
-                if (defender.forces.size() < defenderInit * 0.4) {
-                    winner = 1;
-                    return result.toString();
-                }
-            }
             if (rootedAtt.size() > 0) {
 
                 for (Unit unit : rootedAtt) {
                     if (unit.isSub) unit.superForce.detach(unit);
 
                 }
-                if (attacker.forces.size() < attackerInit * 0.4) winner = -1;
+                if (attacker.strength < attackerInit * 0.4) {
+                    winner = -1;
+
+                }
             }
 
             if (winner != 0) break;
