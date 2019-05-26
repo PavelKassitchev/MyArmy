@@ -52,6 +52,7 @@ public abstract class Unit extends Force {
     }
 
     public Unit bearLoss(double ratio) {
+        if (type == ARTILLERY) ratio *=0.8;
         int s = (int) (strength * ratio);
         double fS = foodStock * ratio;
         double aS = ammoStock * ratio;
@@ -78,6 +79,7 @@ public abstract class Unit extends Force {
     }
 
     public Unit changeMorale(double change) {
+        if (type == CAVALRY) change *= 0.8;
         morale += change;
         if (isSub) superForce.moralize(strength, change);
         return this;
