@@ -4,7 +4,7 @@ public class Squadron extends Unit {
     public static final int MAX_STRENGTH = 300;
     public final static double SPEED = 44;
     public final static double FOOD_NEED = 1.8;
-    public final static double AMMO_NEED = 0.25;
+    public final static double AMMO_NEED = 0.15;
     public final static double FOOD_LIMIT = 12;
     public final static double AMMO_LIMIT = 4;
     public final static double FIRE = 0.17;

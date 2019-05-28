@@ -7,6 +7,9 @@ public abstract class Unit extends Force {
     public static final int CAVALRY = 2;
     public static final int ARTILLERY = 3;
 
+    public static final double FIRE_ON_ARTILLERY = 0.8;
+    public static final double CHARGE_ON_CAVALRY = 0.8;
+
     int type;
     int maxStrength;
 
@@ -52,7 +55,8 @@ public abstract class Unit extends Force {
     }
 
     public Unit bearLoss(double ratio) {
-        if (type == ARTILLERY) ratio *=0.8;
+        if (type == ARTILLERY) ratio *= FIRE_ON_ARTILLERY;
+        if (ratio > 1) ratio = 1;
         int s = (int) (strength * ratio);
         double fS = foodStock * ratio;
         double aS = ammoStock * ratio;
@@ -79,9 +83,9 @@ public abstract class Unit extends Force {
     }
 
     public Unit changeMorale(double change) {
-        if (type == CAVALRY) change *= 0.8;
+        if (type == CAVALRY) change *= CHARGE_ON_CAVALRY;
         morale += change;
-        if (isSub) superForce.moralize(strength, change);
+        if (isSub) superForce.updateMorale(strength, change);
         return this;
     }
 }

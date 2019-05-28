@@ -8,18 +8,23 @@ public class Test {
     static Hex hex = new Hex();
     public static void main(String[] args) {
 
-        Force france = createForce(FRANCE,5, 3, 0);
-        Force austria = createForce(AUSTRIA, 7, 0, 0);
-        Force f = new Force(new Squadron(FRANCE, hex), new Squadron(FRANCE, hex));
+        Force france = createForce(FRANCE,0, 5, 0);
+        Force austria = createForce(AUSTRIA, 1, 0, 0,4);
+        Force f = new Force(new Wagon(FRANCE, hex), new Wagon(FRANCE, hex));
+        Force w =new Wagon(FRANCE, hex);
         //france.attach(f);
+        /*Force france = new Force(new Battalion(FRANCE, hex, 50), new Battalion(FRANCE, hex, 50),
+                new Battalion(FRANCE, hex, 50), new Battalion(FRANCE, hex, 50), new Battalion(FRANCE, hex, 50));*/
+        //france.attach(f);
+        //france.attach(w);
         System.out.println("Before the battle");
         System.out.println();
         list(france);
         list(austria);
         System.out.println();
         Battle battle = new Battle(france, austria);
-        getStat(france, austria);
-        //battle.resolve();
+        //getStat(france, austria);
+        battle.resolve();
         //battle.resolveStage();
         //battle.resolveStage();
         //battle.resolveStage();
@@ -51,14 +56,14 @@ public class Test {
     static void list(Force force) {
         System.out.println(force.name);
         System.out.println("Totally soldiers: " + force.strength + ", Morale level: " + force.morale + " speed: " + force.speed +
-                " FOOD: " + force.foodStock +" foodNeed: "+ force.foodNeed + " foodLimit " + force.foodLimit + " fire : " + force.fire + " charge: " +
+                "AMMO: " + force.ammoStock + " FOOD: " + force.foodStock +" foodNeed: "+ force.foodNeed + " foodLimit " + force.foodLimit + " fire : " + force.fire + " charge: " +
                 force.charge);
         System.out.println("Including: ");
         System.out.println();
         for (Force f: force.forces) {
             if (f.isUnit) {
                 System.out.println("    " + f.name + ": " + f.strength + " soldiers, Morale level: " + f.morale + " speed: " + f.speed +
-                        " FOOD: " + f.foodStock + " Food Need " + f.foodNeed + " foodlimit " + f.foodLimit + " fire: " + f.fire + " charge: " + f.charge);
+                        "AMMO: " + f.ammoStock + " FOOD: " + f.foodStock + " Food Need " + f.foodNeed + " foodlimit " + f.foodLimit + " fire: " + f.fire + " charge: " + f.charge);
             }
             else {
                 list(f);

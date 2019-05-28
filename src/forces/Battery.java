@@ -4,7 +4,7 @@ public class Battery extends Unit {
     public static final int MAX_STRENGTH = 104;
     public final static double SPEED = 20;
     public final static double FOOD_NEED = 0.6;
-    public final static double AMMO_NEED = 2;
+    public final static double AMMO_NEED = 1;
     public final static double FOOD_LIMIT = 8;
     public final static double AMMO_LIMIT = 5;
     public final  static double FIRE = 4;

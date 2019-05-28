@@ -1,8 +1,8 @@
 package forces;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import static forces.Unit.*;
 
@@ -19,6 +19,8 @@ public class Force {
     Nation nation;
     String name;
     Hex hex;
+    //TODO create orders;
+    Order order;
 
     boolean isUnit;
     boolean isSub;
@@ -53,7 +55,7 @@ public class Force {
         squadrons = new ArrayList<>();
         batteries = new ArrayList<>();
         wagons = new ArrayList<>();
-        speed = 120;
+        speed = 100;
     }
 
     public Force(Force... subForces) {
@@ -127,6 +129,7 @@ public class Force {
         fire += force.fire;
         charge += force.charge;
 
+        if (strength != 0) {
         x += force.strength * force.xp;
         m += force.strength * force.morale;
         f += force.strength * force.fatigue;
@@ -137,6 +140,12 @@ public class Force {
         fatigue = f / strength;
         if (speed > force.speed) {
             speed = force.speed;
+        }}
+
+        else {
+            xp =0;
+            fatigue = 0;
+            morale = (morale * (wagons.size() - 1) + force.morale) / wagons.size();
         }
 
         if (isSub) {
@@ -164,11 +173,7 @@ public class Force {
     }
 
     // the methods takes into account Super Forces
-    public void moralize(double s, double change) {
-        double c = s * change / strength;
-        morale += c;
-        if (isSub) superForce.moralize(strength, c);
-    }
+
 
     private void exclude(Force force) {
         double x = xp * strength;
@@ -219,12 +224,22 @@ public class Force {
 
     //this methods shows morale change dependency on inside Unit morale change
 
-    public void moralize(int strength, double change) {
+    public void updateMorale(int strength, double change) {
         double sChange = change * strength / this.strength;
         morale += sChange;
-        if (isSub) superForce.moralize(this.strength, sChange);
+        if (isSub) superForce.updateMorale(this.strength, sChange);
     }
+    public Unit selectRandomUnit() {
+        if (isUnit) return (Unit)this;
 
+        Random random = new Random();
+        ArrayList<Unit> units = new ArrayList<>();
+        units.addAll(battalions);
+        units.addAll(squadrons);
+        units.addAll(batteries);
+        int index = random.nextInt(units.size());
+        return units.get(index);
+    }
     public void throwWagons() {
         List<Wagon> toThrow = new ArrayList<>(wagons);
 

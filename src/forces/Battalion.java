@@ -4,7 +4,7 @@ public class Battalion extends Unit {
     public static final int MAX_STRENGTH = 900;
     public final static double SPEED = 28;
     public final static double FOOD_NEED = 2;
-    public final static double AMMO_NEED = 1;
+    public final static double AMMO_NEED = 0.5;
     public final static double FOOD_LIMIT = 12;
     public final static double AMMO_LIMIT = 4;
     public final static double FIRE = 1;

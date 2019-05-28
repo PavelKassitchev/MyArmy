@@ -5,7 +5,22 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 
+
 public class Battle {
+    public static final int FIRE_ON_ATTACKER = 40;
+    public static final int FIRE_ON_DEFENDER = 38;
+    public static final double CASUALITY_INTO_MORALE = 3.3;
+    public static final int CHARGE_ON_ENEMY = 30;
+    public static final int PURSUIT_CHARGE = 40;
+    public static final int MIN_SOLDIERS = 6;
+    public static final double MIN_MORALE = 0.2;
+    public static final double MORALE_PENALTY = -0.03;
+    public static final double MORALE_BONUS = 0.03;
+    public static final double SMALL_MORALE_BONUS = 0.02;
+    public static final double VICTORY_BONUS = 0.5;
+    public static final double SMALL_VICTORY_BONUS = 0.2;
+
+
     Force attacker;
     Force defender;
     int attackerInit;
@@ -23,16 +38,27 @@ public class Battle {
 
     public int pursuit(int rooted) {
         int prisoners = 0;
+        double prisonnedShare;
         if (winner == 1) {
-            for (Unit unit: rootedDef) {
-                prisoners += unit.strength * 40 * attacker.charge / rooted;
-                unit.bearLoss(40 * attacker.charge / rooted);
+            if (PURSUIT_CHARGE * attacker.charge > rooted) {
+                prisonnedShare = 1;
+            } else {
+                prisonnedShare = PURSUIT_CHARGE * attacker.charge / rooted;
+            }
+            for (Unit unit : rootedDef) {
+                prisoners += unit.strength * prisonnedShare;
+                unit.bearLoss(prisonnedShare);
             }
         }
         if (winner == -1) {
-            for (Unit unit: rootedAtt) {
-                prisoners += unit.strength * 40 * defender.charge / rooted;
-                unit.bearLoss(40 * defender.charge / rooted);
+            if (PURSUIT_CHARGE * defender.charge > rooted) {
+                prisonnedShare = 1;
+            } else {
+                prisonnedShare = PURSUIT_CHARGE * defender.charge / rooted;
+            }
+            for (Unit unit : rootedAtt) {
+                prisoners += unit.strength * prisonnedShare;
+                unit.bearLoss(prisonnedShare);
             }
         }
         return prisoners;
@@ -50,39 +76,34 @@ public class Battle {
         int defenderRooted = 0;
 
 
-
-
         if (winner == 1) {
             for (Unit unit : rootedDef) defenderRooted += unit.strength;
             System.out.println("Attacker took prisoners: " + pursuit(defenderRooted));
-            for (Battalion unit: attacker.battalions) unit.changeMorale(0.5);
-            for (Squadron unit: attacker.squadrons) unit.changeMorale(0.5);
-            for (Battery unit: attacker.batteries) unit.changeMorale(0.5);
-            for (Unit unit: rootedAtt) {
-                unit.changeMorale(0.2);
+            for (Battalion unit : attacker.battalions) unit.changeMorale(VICTORY_BONUS);
+            for (Squadron unit : attacker.squadrons) unit.changeMorale(VICTORY_BONUS);
+            for (Battery unit : attacker.batteries) unit.changeMorale(VICTORY_BONUS);
+            for (Unit unit : rootedAtt) {
+                unit.changeMorale(SMALL_VICTORY_BONUS);
                 if (unit.morale > 0) {
                     attacker.attach(unit);
 
-                }
-                else {
+                } else {
                     attackerRooted += unit.strength;
                 }
             }
 
-        }
-        else {
+        } else {
             for (Unit unit : rootedAtt) attackerRooted += unit.strength;
             System.out.println("Defender took prisoners: " + pursuit(attackerRooted));
-            for (Battalion unit: defender.battalions) unit.changeMorale(0.5);
-            for (Squadron unit: defender.squadrons) unit.changeMorale(0.5);
-            for (Battery unit: defender.batteries) unit.changeMorale(0.5);
-            for (Unit unit: rootedDef) {
-                unit.changeMorale(0.2);
+            for (Battalion unit : defender.battalions) unit.changeMorale(VICTORY_BONUS);
+            for (Squadron unit : defender.squadrons) unit.changeMorale(VICTORY_BONUS);
+            for (Battery unit : defender.batteries) unit.changeMorale(VICTORY_BONUS);
+            for (Unit unit : rootedDef) {
+                unit.changeMorale(SMALL_VICTORY_BONUS);
                 if (unit.morale > 0) {
                     defender.attach(unit);
 
-                }
-                else {
+                } else {
                     defenderRooted += unit.strength;
                 }
             }
@@ -106,15 +127,17 @@ public class Battle {
 
         unit.bearLoss(fire);
         unit.changeMorale(charge);
-        if (unit.strength <= 6 || unit.morale <= 0.2) {
+        if (unit.strength <= MIN_SOLDIERS || unit.morale <= MIN_MORALE) {
+
             rooted.add(unit);
-            selectRandomUnit(opponent).changeMorale(0.03);
+            opponent.selectRandomUnit().changeMorale(MORALE_BONUS);
+
             if (unit.isSub) {
                 for (Force force : unit.superForce.forces) {
                     if (force.isUnit && force != unit) {
-                        ((Unit) force).changeMorale(-0.03);
-                        if (force.morale <= 0.2) rooted.add((Unit) force);
-                        selectRandomUnit(opponent).changeMorale(0.02);
+                        ((Unit) force).changeMorale(MORALE_PENALTY);
+                        if (force.morale <= MIN_MORALE) rooted.add((Unit) force);
+                        opponent.selectRandomUnit().changeMorale(SMALL_MORALE_BONUS);
                     }
                 }
             }
@@ -125,16 +148,16 @@ public class Battle {
 
     public String resolveStage() {
 
-        double fireOnDefender = 38 * attacker.fire / defender.strength;
+        double fireOnDefender = FIRE_ON_DEFENDER * attacker.fire / defender.strength;
         System.out.println("Fire on def " + fireOnDefender);
 
-        double fireOnAttacker = 40 * defender.fire / attacker.strength;
+        double fireOnAttacker = FIRE_ON_ATTACKER * defender.fire / attacker.strength;
         System.out.println("Fire on att " + fireOnAttacker);
 
-        double chargeOnDefender = -(3.3 * fireOnDefender + 30 * attacker.charge / defender.strength);
+        double chargeOnDefender = -(CASUALITY_INTO_MORALE * fireOnDefender + CHARGE_ON_ENEMY * attacker.charge / defender.strength);
         System.out.println("Charge on def " + chargeOnDefender);
 
-        double chargeOnAttacker = -(3.3 * fireOnAttacker + 30 * defender.charge / attacker.strength);
+        double chargeOnAttacker = -(CASUALITY_INTO_MORALE * fireOnAttacker + CHARGE_ON_ENEMY * defender.charge / attacker.strength);
         System.out.println("Charge on att " + chargeOnAttacker);
 
 
@@ -230,17 +253,6 @@ public class Battle {
         return result.toString();
     }
 
-    public Unit selectRandomUnit(Force force) {
-        if (force.isUnit) return (Unit) force;
-
-        Random random = new Random();
-        ArrayList<Unit> units = new ArrayList<>();
-        units.addAll(force.battalions);
-        units.addAll(force.squadrons);
-        units.addAll(force.batteries);
-        int index = random.nextInt(units.size());
-        return units.get(index);
-    }
 }
 
 
