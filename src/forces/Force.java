@@ -174,7 +174,6 @@ public class Force {
 
     // the methods takes into account Super Forces
 
-
     private void exclude(Force force) {
         double x = xp * strength;
         double m = morale * strength;
@@ -373,28 +372,6 @@ public class Force {
         return ammo;
     }
 
-    public double unloadAmmo(double ammo) {
-        double toUnload = ammo;
-        for (Force force : forces) {
-            if (force.isUnit) {
-                if (toUnload <= force.ammoStock) {
-                    force.ammoStock -= toUnload;
-                    ammoStock -= toUnload;
-                    toUnload = 0;
-                    break;
-                } else {
-                    ammoStock -= force.ammoStock;
-                    toUnload -= force.ammoStock;
-                    force.ammoStock = 0;
-                }
-            } else {
-                double tU = force.unloadAmmo(toUnload);
-                ammoStock -= (toUnload - tU);
-                toUnload = tU;
-            }
-        }
-        return toUnload;
-    }
 
     //Pair methods for food
     //
@@ -518,29 +495,6 @@ public class Force {
             }
         }
         return food;
-    }
-
-    public double unloadFood(double food) {
-        double toUnload = food;
-        for (Force force : forces) {
-            if (force.isUnit) {
-                if (toUnload <= force.foodStock) {
-                    force.foodStock -= toUnload;
-                    foodStock -= toUnload;
-                    toUnload = 0;
-                    break;
-                } else {
-                    foodStock -= force.foodStock;
-                    toUnload -= force.foodStock;
-                    force.foodStock = 0;
-                }
-            } else {
-                double tU = force.unloadFood(toUnload);
-                foodStock -= (toUnload - tU);
-                toUnload = tU;
-            }
-        }
-        return toUnload;
     }
 
 
