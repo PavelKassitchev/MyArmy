@@ -20,7 +20,6 @@ public class Test {
         france.attach(f);
         france.attach(w);
 
-
         System.out.println("Before the battle");
         System.out.println();
         list(france);
