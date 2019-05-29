@@ -200,10 +200,11 @@ public class Battle {
             for (int i = 0; i < defenderStep; i++) {
                 if (defIterator.hasNext()) {
                     Unit b = defIterator.next();
-
+                    double ratio = b.strength / defender.strength;
                     double fluke = 0.7 + 0.6 * random.nextDouble();
                     //fluke = 1;
                     hitUnit(b, fluke * fireOnDefender, fluke * chargeOnDefender);
+                    for (Unit unit: attackerUnits) unit.fire(ratio);
                     System.out.println(b.name + " " + b.nation + " hit, morale = " + b.morale);
                 }
             }
@@ -222,10 +223,11 @@ public class Battle {
             for (int i = 0; i < attackerStep; i++) {
                 if (attIterator.hasNext()) {
                     Unit b = attIterator.next();
-
+                    double ratio = b.strength / attacker.strength;
                     double fluke = 0.7 + 0.6 * random.nextDouble();
                     //fluke = 1;
                     hitUnit(b, fluke * fireOnAttacker, fluke * chargeOnAttacker);
+                    for (Unit unit: defenderUnits) unit.fire(ratio);
                     System.out.println(b.name + " " + b.nation + " hit, morale = " + b.morale);
                 }
 

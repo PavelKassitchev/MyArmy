@@ -2,6 +2,8 @@ package forces;
 import java.awt.*;
 
 import static forces.Nation.*;
+import static forces.Unit.*;
+
 
 public class Test {
 
@@ -9,23 +11,32 @@ public class Test {
     public static void main(String[] args) {
 
         Force france = createForce(FRANCE,0, 5, 0);
-        Force austria = createForce(AUSTRIA, 1, 0, 0,4);
-        Force f = new Force(new Wagon(FRANCE, hex), new Wagon(FRANCE, hex));
+        Force austria = createForce(AUSTRIA, 4, 0, 0,4);
+        Force f = new Force(new Battalion(FRANCE, hex), new Battalion(FRANCE, hex));
         Force w =new Wagon(FRANCE, hex);
         //france.attach(f);
         /*Force france = new Force(new Battalion(FRANCE, hex, 50), new Battalion(FRANCE, hex, 50),
                 new Battalion(FRANCE, hex, 50), new Battalion(FRANCE, hex, 50), new Battalion(FRANCE, hex, 50));*/
-        //france.attach(f);
-        //france.attach(w);
+        france.attach(f);
+        france.attach(w);
+
+
         System.out.println("Before the battle");
         System.out.println();
         list(france);
         list(austria);
         System.out.println();
+
+        //double a = france.unloadAmmo();
+        //System.out.println("UNLOADED: " + a);
+        //double n = france.loadAmmo(INFANTRY, CAVALRY);
+        //System.out.println("LOADED: "+ n);
+        //france.distributeAmmo(15.0);
+
         Battle battle = new Battle(france, austria);
         //getStat(france, austria);
-        battle.resolve();
-        //battle.resolveStage();
+        //battle.resolve();
+        battle.resolveStage();
         //battle.resolveStage();
         //battle.resolveStage();
         //battle.resolveStage();
@@ -56,14 +67,14 @@ public class Test {
     static void list(Force force) {
         System.out.println(force.name);
         System.out.println("Totally soldiers: " + force.strength + ", Morale level: " + force.morale + " speed: " + force.speed +
-                "AMMO: " + force.ammoStock + " FOOD: " + force.foodStock +" foodNeed: "+ force.foodNeed + " foodLimit " + force.foodLimit + " fire : " + force.fire + " charge: " +
+                " AMMO: " + force.ammoStock + " FOOD: " + force.foodStock +" foodNeed: "+ force.foodNeed + " foodLimit " + force.foodLimit + " fire : " + force.fire + " charge: " +
                 force.charge);
         System.out.println("Including: ");
         System.out.println();
         for (Force f: force.forces) {
             if (f.isUnit) {
                 System.out.println("    " + f.name + ": " + f.strength + " soldiers, Morale level: " + f.morale + " speed: " + f.speed +
-                        "AMMO: " + f.ammoStock + " FOOD: " + f.foodStock + " Food Need " + f.foodNeed + " foodlimit " + f.foodLimit + " fire: " + f.fire + " charge: " + f.charge);
+                        " AMMO: " + f.ammoStock + " FOOD: " + f.foodStock + " Food Need " + f.foodNeed + " foodlimit " + f.foodLimit + " fire: " + f.fire + " charge: " + f.charge);
             }
             else {
                 list(f);

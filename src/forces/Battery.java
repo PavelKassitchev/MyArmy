@@ -18,6 +18,8 @@ public class Battery extends Unit {
         isUnit = true;
         type = ARTILLERY;
         maxStrength = MAX_STRENGTH;
+        maxFire = FIRE;
+        maxCharge = CHARGE;
         this.strength = strength;
         speed = SPEED;
         foodNeed = FOOD_NEED * strength / maxStrength;

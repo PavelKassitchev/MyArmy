@@ -45,7 +45,7 @@ public class Force {
 
     //STATIC SECTION
 
-    //TODO exclude SUPPLY morale and xp
+    //TODO exclude SUPPLY xp
 
     public Force(Nation nation, Hex hex) {
         this.nation = nation;
@@ -69,6 +69,9 @@ public class Force {
 
     public Force attach(Force force) {
 
+        if (isUnit){
+            //TODO
+        }
         force.isSub = true;
         force.superForce = this;
         forces.add(force);
@@ -130,23 +133,23 @@ public class Force {
         charge += force.charge;
 
         if (strength != 0) {
-        x += force.strength * force.xp;
-        m += force.strength * force.morale;
-        f += force.strength * force.fatigue;
+            x += force.strength * force.xp;
+            m += force.strength * force.morale;
+            f += force.strength * force.fatigue;
 
 
-        xp = x / strength;
-        morale = m / strength;
-        fatigue = f / strength;
-        if (speed > force.speed) {
-            speed = force.speed;
-        }}
-
-        else {
-            xp =0;
+            xp = x / strength;
+            morale = m / strength;
+            fatigue = f / strength;
+        } else {
+            xp = 0;
             fatigue = 0;
             morale = (morale * (wagons.size() - 1) + force.morale) / wagons.size();
         }
+        if (speed > force.speed) {
+            speed = force.speed;
+        }
+
 
         if (isSub) {
             superForce.include(force);
@@ -228,8 +231,17 @@ public class Force {
         morale += sChange;
         if (isSub) superForce.updateMorale(this.strength, sChange);
     }
+
+    public double doFire(double stockDrop, double fireDrop) {
+        double fireAttack = 0;
+        ammoStock += stockDrop;
+        fire += fireDrop;
+        if (isSub) superForce.doFire(stockDrop, fireDrop);
+        return fireAttack;
+    }
+
     public Unit selectRandomUnit() {
-        if (isUnit) return (Unit)this;
+        if (isUnit) return (Unit) this;
 
         Random random = new Random();
         ArrayList<Unit> units = new ArrayList<>();
@@ -239,6 +251,7 @@ public class Force {
         int index = random.nextInt(units.size());
         return units.get(index);
     }
+
     public void throwWagons() {
         List<Wagon> toThrow = new ArrayList<>(wagons);
 
@@ -277,9 +290,10 @@ public class Force {
 
             double ratio = free / ammoNeed;
             free -= loadAmmo(ratio, INFANTRY, CAVALRY, ARTILLERY);
-        } else if (free > ammoNeed * Battalion.AMMO_LIMIT / Battalion.AMMO_NEED) {
+        } else if (free >= ammoNeed * Battalion.AMMO_LIMIT / Battalion.AMMO_NEED) {
 
             free -= loadAmmo(INFANTRY, ARTILLERY);
+            System.out.println("FREE= " + free);
             double ratio = free / ((ammoLimit - wagons.size() * Wagon.AMMO_LIMIT - ammoStock) * Squadron.AMMO_NEED / Squadron.AMMO_LIMIT);
             free -= loadAmmo(ratio, CAVALRY);
         } else {
@@ -303,6 +317,9 @@ public class Force {
     }
 
     public double loadAmmo(double ratio, int... types) {
+        if (isUnit) {
+            //TODo
+        }
         double need = 0;
         for (Force force : forces) {
             if (force.isUnit) {
@@ -311,11 +328,20 @@ public class Force {
                     force.ammoStock = n;
                     ammoStock += n;
                     need += n;
+                    if (ratio < 1) {
+                        force.fire = ((Unit)force).maxFire * ratio * force.strength / ((Unit) force).maxStrength;
+                    }
+                    else {
+                        force.fire = ((Unit)force).maxFire * force.strength / ((Unit) force).maxStrength;
+                    }
+                    fire += force.fire;
                 }
             } else {
+                double initFire = force.fire;
                 double n = force.loadAmmo(ratio, types);
                 ammoStock += n;
                 need += n;
+                fire += (force.fire - initFire);
             }
         }
 
@@ -339,6 +365,9 @@ public class Force {
     }
 
     public double loadAmmo(int... types) {
+        if (isUnit) {
+            //TODO
+        }
         double need = 0;
         for (Force force : forces) {
             if (force.isUnit) {
@@ -346,11 +375,15 @@ public class Force {
                     force.ammoStock = force.ammoLimit;
                     ammoStock += force.ammoLimit;
                     need += force.ammoLimit;
+                    force.fire = ((Unit)force).maxFire * force.strength / ((Unit) force).maxStrength;
+                    fire += force.fire;
                 }
             } else {
+                double initFire = force.fire;
                 double n = force.loadAmmo(types);
                 need += n;
                 ammoStock += n;
+                fire += (force.fire - initFire);
             }
         }
         return need;
@@ -363,10 +396,15 @@ public class Force {
                 ammo += force.ammoStock;
                 ammoStock -= force.ammoStock;
                 force.ammoStock = 0;
+                fire -= force.fire;
+                force.fire = 0;
             } else {
+                double fi = force.fire;
                 double f = force.unloadAmmo();
                 ammoStock -= f;
+                fire -= fi;
                 ammo += f;
+
             }
         }
         return ammo;

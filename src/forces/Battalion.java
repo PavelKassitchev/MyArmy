@@ -19,6 +19,8 @@ public class Battalion extends Unit {
         isUnit = true;
         type = INFANTRY;
         maxStrength = MAX_STRENGTH;
+        maxFire = FIRE;
+        maxCharge = CHARGE;
         this.strength = strength;
         speed = SPEED;
         foodNeed = FOOD_NEED * strength / maxStrength;

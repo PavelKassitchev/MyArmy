@@ -12,6 +12,8 @@ public abstract class Unit extends Force {
 
     int type;
     int maxStrength;
+    double maxFire;
+    double maxCharge;
 
     public Unit(Nation nation, Hex hex) {
         super(nation, hex);
@@ -87,5 +89,17 @@ public abstract class Unit extends Force {
         morale += change;
         if (isSub) superForce.updateMorale(strength, change);
         return this;
+    }
+
+    public double fire(double ratio) {
+        double fireAttack = fire;
+        double initStock = ammoStock;
+        if (ammoStock > ammoNeed * ratio) ammoStock -= ammoNeed * ratio;
+        else {
+            ammoStock = 0;
+            fire = 0;
+        }
+        if (isSub) superForce.doFire(ammoStock - initStock, fire - fireAttack);
+        return fireAttack;
     }
 }
