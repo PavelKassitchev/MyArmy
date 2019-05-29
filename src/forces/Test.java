@@ -34,8 +34,8 @@ public class Test {
 
         Battle battle = new Battle(france, austria);
         //getStat(france, austria);
-        //battle.resolve();
-        battle.resolveStage();
+        battle.resolve();
+        //battle.resolveStage();
         //battle.resolveStage();
         //battle.resolveStage();
         //battle.resolveStage();

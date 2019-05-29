@@ -92,10 +92,13 @@ public abstract class Unit extends Force {
     }
 
     public double fire(double ratio) {
+        System.out.println("RATIO: " + ratio);
         double fireAttack = fire;
         double initStock = ammoStock;
-        if (ammoStock > ammoNeed * ratio) ammoStock -= ammoNeed * ratio;
-        else {
+        if (ammoStock > ammoNeed * ratio) {
+            ammoStock -= ammoNeed * ratio;
+            System.out.println("Unit " + name + " ammostock: " + ammoStock);
+        } else {
             ammoStock = 0;
             fire = 0;
         }

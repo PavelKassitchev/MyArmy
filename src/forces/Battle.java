@@ -200,7 +200,8 @@ public class Battle {
             for (int i = 0; i < defenderStep; i++) {
                 if (defIterator.hasNext()) {
                     Unit b = defIterator.next();
-                    double ratio = b.strength / defender.strength;
+                    double ratio = (double)b.strength / defender.strength;
+                    System.out.println("defender ratio - " + ratio  + " strength - " + b.strength + " Total: " + defender.strength);
                     double fluke = 0.7 + 0.6 * random.nextDouble();
                     //fluke = 1;
                     hitUnit(b, fluke * fireOnDefender, fluke * chargeOnDefender);
@@ -223,7 +224,8 @@ public class Battle {
             for (int i = 0; i < attackerStep; i++) {
                 if (attIterator.hasNext()) {
                     Unit b = attIterator.next();
-                    double ratio = b.strength / attacker.strength;
+                    double ratio = (double)b.strength / attacker.strength;
+                    System.out.println("attacker ratio - " + ratio + " strength - " + b.strength + " Total: " + attacker.strength);
                     double fluke = 0.7 + 0.6 * random.nextDouble();
                     //fluke = 1;
                     hitUnit(b, fluke * fireOnAttacker, fluke * chargeOnAttacker);
