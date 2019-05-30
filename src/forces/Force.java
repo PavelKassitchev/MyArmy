@@ -55,6 +55,7 @@ public class Force {
         squadrons = new ArrayList<>();
         batteries = new ArrayList<>();
         wagons = new ArrayList<>();
+        order = new Order(false, 0);
         speed = 100;
     }
 

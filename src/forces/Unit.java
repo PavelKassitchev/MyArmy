@@ -9,6 +9,8 @@ public abstract class Unit extends Force {
 
     public static final double FIRE_ON_ARTILLERY = 0.8;
     public static final double CHARGE_ON_CAVALRY = 0.8;
+    public static final double LACK_OF_AMMO_PENALTY = - 0.1;
+    public static final double OUT_OF_AMMO_PENALTY = - 0.3;
 
     int type;
     int maxStrength;
@@ -92,15 +94,16 @@ public abstract class Unit extends Force {
     }
 
     public double fire(double ratio) {
-        System.out.println("RATIO: " + ratio);
         double fireAttack = fire;
         double initStock = ammoStock;
         if (ammoStock > ammoNeed * ratio) {
             ammoStock -= ammoNeed * ratio;
-            System.out.println("Unit " + name + " ammostock: " + ammoStock);
-        } else {
+            if (ammoStock < ammoNeed * ratio) changeMorale(LACK_OF_AMMO_PENALTY);
+        }
+        else {
             ammoStock = 0;
             fire = 0;
+            changeMorale(OUT_OF_AMMO_PENALTY);
         }
         if (isSub) superForce.doFire(ammoStock - initStock, fire - fireAttack);
         return fireAttack;

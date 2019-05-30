@@ -10,15 +10,17 @@ public class Test {
     static Hex hex = new Hex();
     public static void main(String[] args) {
 
-        Force france = createForce(FRANCE,0, 5, 0);
-        Force austria = createForce(AUSTRIA, 4, 0, 0,4);
+        Force france = createForce(FRANCE,50, 0, 0);
+        Force austria = createForce(AUSTRIA, 50, 0, 0);
+        france.order = new Order(true, 0);
+        austria.order = new Order(true, 0.3);
         Force f = new Force(new Battalion(FRANCE, hex), new Battalion(FRANCE, hex));
-        Force w =new Wagon(FRANCE, hex);
+        Force w = new Wagon(FRANCE, hex);
         //france.attach(f);
         /*Force france = new Force(new Battalion(FRANCE, hex, 50), new Battalion(FRANCE, hex, 50),
                 new Battalion(FRANCE, hex, 50), new Battalion(FRANCE, hex, 50), new Battalion(FRANCE, hex, 50));*/
-        france.attach(f);
-        france.attach(w);
+        //france.attach(f);
+        //france.attach(w);
 
         System.out.println("Before the battle");
         System.out.println();
@@ -49,18 +51,24 @@ public class Test {
     public static void getStat(Force attacker, Force defender) {
         int a = 0;
         int d = 0;
+        int n = 0;
         for (int i = 0; i < 1000; i++) {
             Force att = createForce(attacker.nation, attacker.battalions.size(), attacker.squadrons.size(), attacker.batteries.size(), attacker.morale);
+            att.order= new Order(attacker.order.seekBattle, attacker.order.retreatLevel);
             Force def = createForce(defender.nation, defender.battalions.size(), defender.squadrons.size(), defender.batteries.size(), defender.morale);
+            def.order = new Order(defender.order.seekBattle, defender.order.retreatLevel);
 
             Battle battle = new Battle(att, def);
             int r = battle.resolve();
 
             if (r == 1) a++;
-            else d++;
+            else
+                if (r == -1) d++;
+
+            else n++;
         }
 
-        System.out.println("Attacker wins = " + a + " Defender wins = " + d);
+        System.out.println("Attacker wins = " + a + " Defender wins = " + d + " Without battle " + n);
     }
 
     static void list(Force force) {

@@ -65,6 +65,12 @@ public class Battle {
     }
 
     public int resolve() {
+
+        if (!attacker.order.seekBattle && !defender.order.seekBattle) return 0;
+        if (!attacker.order.seekBattle || !defender.order.seekBattle) {
+            Random random = new Random();
+            if (random.nextBoolean()) return 0;
+        }
         String s;
         int count = 0;
         while (winner == 0) {
@@ -215,7 +221,7 @@ public class Battle {
                     if (unit.isSub) unit.superForce.detach(unit);
 
                 }
-                if (defender.strength < defenderInit * 0.4) {
+                if (defender.strength <= defenderInit * defender.order.retreatLevel) {
                     winner = 1;
 
                     return result.toString();
@@ -241,7 +247,7 @@ public class Battle {
                     if (unit.isSub) unit.superForce.detach(unit);
 
                 }
-                if (attacker.strength < attackerInit * 0.4) {
+                if (attacker.strength <= attackerInit * attacker.order.retreatLevel) {
                     winner = -1;
 
                 }
