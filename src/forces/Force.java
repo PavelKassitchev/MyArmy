@@ -85,6 +85,7 @@ public class Force {
         force.isSub = false;
         force.superForce = null;
         forces.remove(force);
+        force.order = new Order();
         exclude(force);
 
         return force;

@@ -7,8 +7,7 @@ import java.util.Random;
 
 
 public class Battle {
-    public static final int FIRE_ON_ATTACKER = 40;
-    public static final int FIRE_ON_DEFENDER = 39;
+    public static final int FIRE_ON_UNIT = 40;
     public static final double CASUALITY_INTO_MORALE = 3.3;
     public static final int CHARGE_ON_ENEMY = 30;
     public static final int PURSUIT_CHARGE = 40;
@@ -25,15 +24,33 @@ public class Battle {
     Force defender;
     int attackerInit;
     int defenderInit;
+    double defenderBonus;
     int winner = 0;
     HashSet<Unit> rootedDef = new HashSet<>();
     HashSet<Unit> rootedAtt = new HashSet<>();
 
-    public Battle(Force attacker, Force defender) {
-        this.attacker = attacker;
-        this.defender = defender;
+    public Battle(Force force1, Force force2) {
+
+        if (force2.order.seekBattle && (!force1.order.seekBattle || force2.strength > force1.strength)) {
+
+            attacker = force2;
+            defender = force1;
+        }
+        else {
+            attacker = force1;
+            defender = force2;
+        }
+
         attackerInit = attacker.strength;
         defenderInit = defender.strength;
+        defenderBonus = getBonus(defender);
+    }
+
+    public double getBonus(Force force) {
+        int units = force.battalions.size() + force.batteries.size() + force.squadrons.size();
+        if (units > 20) return 1;
+        return 1.0045 - 0.1253 / units;
+
     }
 
     public int pursuit(int rooted) {
@@ -154,10 +171,10 @@ public class Battle {
 
     public String resolveStage() {
 
-        double fireOnDefender = FIRE_ON_DEFENDER * attacker.fire / defender.strength;
+        double fireOnDefender = FIRE_ON_UNIT * defenderBonus * attacker.fire / defender.strength;
         System.out.println("Fire on def " + fireOnDefender);
 
-        double fireOnAttacker = FIRE_ON_ATTACKER * defender.fire / attacker.strength;
+        double fireOnAttacker = FIRE_ON_UNIT * defender.fire / attacker.strength;
         System.out.println("Fire on att " + fireOnAttacker);
 
         double chargeOnDefender = -(CASUALITY_INTO_MORALE * fireOnDefender + CHARGE_ON_ENEMY * attacker.charge / defender.strength);

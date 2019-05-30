@@ -10,10 +10,10 @@ public class Test {
     static Hex hex = new Hex();
     public static void main(String[] args) {
 
-        Force france = createForce(FRANCE,50, 0, 0);
-        Force austria = createForce(AUSTRIA, 50, 0, 0);
-        france.order = new Order(true, 0);
-        austria.order = new Order(true, 0.3);
+        Force france = createForce(FRANCE,0, 0, 1);
+        Force austria = createForce(AUSTRIA, 0, 0, 1);
+        france.order = new Order(true, 0.4);
+        austria.order = new Order(true, 0.4);
         Force f = new Force(new Battalion(FRANCE, hex), new Battalion(FRANCE, hex));
         Force w = new Wagon(FRANCE, hex);
         //france.attach(f);
@@ -35,8 +35,8 @@ public class Test {
         //france.distributeAmmo(15.0);
 
         Battle battle = new Battle(france, austria);
-        //getStat(france, austria);
-        battle.resolve();
+        getStat(france, austria);
+        //battle.resolve();
         //battle.resolveStage();
         //battle.resolveStage();
         //battle.resolveStage();
