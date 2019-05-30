@@ -253,12 +253,17 @@ public class Force {
         return units.get(index);
     }
 
-    public void throwWagons() {
+    public void throwWagons(double caught) {
         List<Wagon> toThrow = new ArrayList<>(wagons);
+        Random random = new Random();
 
         for (Wagon wagon : toThrow) {
             wagon.superForce.detach(wagon);
+            if (random.nextDouble() > caught) wagon = null;
         }
+    }
+    public void throwWagons() {
+        throwWagons(0);
     }
 
     //This method distributs all ammo of the force plus extra ammo (argument double ammo) between all the units and sub-forces

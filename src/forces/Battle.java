@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class Battle {
     public static final int FIRE_ON_ATTACKER = 40;
-    public static final int FIRE_ON_DEFENDER = 38;
+    public static final int FIRE_ON_DEFENDER = 39;
     public static final double CASUALITY_INTO_MORALE = 3.3;
     public static final int CHARGE_ON_ENEMY = 30;
     public static final int PURSUIT_CHARGE = 40;
@@ -166,6 +166,9 @@ public class Battle {
         double chargeOnAttacker = -(CASUALITY_INTO_MORALE * fireOnAttacker + CHARGE_ON_ENEMY * defender.charge / attacker.strength);
         System.out.println("Charge on att " + chargeOnAttacker);
 
+        int initAtt = attacker.strength;
+        int initDef = defender.strength;
+
 
         Random random = new Random();
 
@@ -206,7 +209,7 @@ public class Battle {
             for (int i = 0; i < defenderStep; i++) {
                 if (defIterator.hasNext()) {
                     Unit b = defIterator.next();
-                    double ratio = (double)b.strength / defender.strength;
+                    double ratio = (double)b.strength / initDef;
                     System.out.println("defender ratio - " + ratio  + " strength - " + b.strength + " Total: " + defender.strength);
                     double fluke = 0.7 + 0.6 * random.nextDouble();
                     //fluke = 1;
@@ -230,7 +233,7 @@ public class Battle {
             for (int i = 0; i < attackerStep; i++) {
                 if (attIterator.hasNext()) {
                     Unit b = attIterator.next();
-                    double ratio = (double)b.strength / attacker.strength;
+                    double ratio = (double)b.strength / initAtt;
                     System.out.println("attacker ratio - " + ratio + " strength - " + b.strength + " Total: " + attacker.strength);
                     double fluke = 0.7 + 0.6 * random.nextDouble();
                     //fluke = 1;
