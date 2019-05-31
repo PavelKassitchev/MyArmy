@@ -18,6 +18,7 @@ public class Battle {
     public static final double SMALL_MORALE_BONUS = 0.02;
     public static final double VICTORY_BONUS = 0.5;
     public static final double SMALL_VICTORY_BONUS = 0.2;
+    public static final double LONG_DISTANCE_FIRE = 0.0;
 
 
     Force attacker;
@@ -90,6 +91,7 @@ public class Battle {
         }
         String s;
         int count = 0;
+        longDistanceBombing();
         while (winner == 0) {
             s = resolveStage();
             count++;
@@ -166,6 +168,46 @@ public class Battle {
             }
         }
 
+    }
+
+    public int longDistanceBombing() {
+        int casualities = 0;
+        Random random = new Random();
+
+        ArrayList<Unit> attackerUnits = new ArrayList<>();
+        if (!attacker.isUnit) {
+            attackerUnits.addAll(attacker.battalions);
+            attackerUnits.addAll(attacker.batteries);
+            attackerUnits.addAll(attacker.squadrons);
+        } else {
+            attackerUnits.add((Unit) attacker);
+        }
+        double longDistanceBombing = 0;
+
+        for (Unit unit: attackerUnits) {
+            int initStrength = unit.strength;
+            double ratio = (double) initStrength / attackerInit;
+
+            for (Battery b: defender.batteries) {
+                b.fire(ratio);
+                double fireEffect = LONG_DISTANCE_FIRE * 0.7 + 0.6 * random.nextDouble() * b.fire * FIRE_ON_UNIT / attackerInit;
+                hitUnit(unit, fireEffect, (-CASUALITY_INTO_MORALE * fireEffect));
+            }
+            System.out.println(unit.morale);
+        }
+        if (rootedAtt.size() > 0) {
+
+            for (Unit unit : rootedAtt) {
+                if (unit.isSub) unit.superForce.detach(unit);
+
+            }
+            if (attacker.strength <= attackerInit * attacker.order.retreatLevel) {
+                winner = -1;
+
+            }
+        }
+        System.out.println(casualities);
+        return casualities;
     }
 
 

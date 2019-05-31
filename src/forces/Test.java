@@ -35,7 +35,8 @@ public class Test {
         //france.distributeAmmo(15.0);
 
         Battle battle = new Battle(france, austria);
-        getStat(france, austria);
+        //getStat(france, austria);
+        battle.longDistanceBombing();
         //battle.resolve();
         //battle.resolveStage();
         //battle.resolveStage();
