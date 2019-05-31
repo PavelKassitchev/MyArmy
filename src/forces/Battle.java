@@ -18,7 +18,7 @@ public class Battle {
     public static final double SMALL_MORALE_BONUS = 0.02;
     public static final double VICTORY_BONUS = 0.5;
     public static final double SMALL_VICTORY_BONUS = 0.2;
-    public static final double LONG_DISTANCE_FIRE = 0.3;
+    public static final double LONG_DISTANCE_FIRE = 0.65;
 
 
     Force attacker;
