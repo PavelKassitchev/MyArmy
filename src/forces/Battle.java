@@ -18,7 +18,7 @@ public class Battle {
     public static final double SMALL_MORALE_BONUS = 0.02;
     public static final double VICTORY_BONUS = 0.5;
     public static final double SMALL_VICTORY_BONUS = 0.2;
-    public static final double LONG_DISTANCE_FIRE = 0.0;
+    public static final double LONG_DISTANCE_FIRE = 0.3;
 
 
     Force attacker;
@@ -182,7 +182,7 @@ public class Battle {
         } else {
             attackerUnits.add((Unit) attacker);
         }
-        double longDistanceBombing = 0;
+
 
         for (Unit unit: attackerUnits) {
             int initStrength = unit.strength;
@@ -190,10 +190,12 @@ public class Battle {
 
             for (Battery b: defender.batteries) {
                 b.fire(ratio);
-                double fireEffect = LONG_DISTANCE_FIRE * 0.7 + 0.6 * random.nextDouble() * b.fire * FIRE_ON_UNIT / attackerInit;
+                double fireEffect = LONG_DISTANCE_FIRE * ((0.7 + 0.6 * random.nextDouble() * b.fire * FIRE_ON_UNIT) / attackerInit);
+                System.out.println("ATTACKER INIT: " + attackerInit + "battery fire " + b.fire);
+                System.out.println("FIRE: " + fireEffect);
                 hitUnit(unit, fireEffect, (-CASUALITY_INTO_MORALE * fireEffect));
             }
-            System.out.println(unit.morale);
+            System.out.println("MORALE " + unit.morale);
         }
         if (rootedAtt.size() > 0) {
 
@@ -206,7 +208,7 @@ public class Battle {
 
             }
         }
-        System.out.println(casualities);
+        System.out.println("CASUALITIES: " + casualities);
         return casualities;
     }
 
