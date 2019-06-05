@@ -8,7 +8,8 @@ public abstract class Unit extends Force {
     public static final int ARTILLERY = 3;
 
     public static final double FIRE_ON_ARTILLERY = 0.5;
-    public static final double CHARGE_ON_CAVALRY = 0.8;
+    public static final double CHARGE_ON_ARTILLERY = 1.3;
+    public static final double CHARGE_ON_CAVALRY = 0.75;
     public static final double LACK_OF_AMMO_PENALTY = - 0.1;
     public static final double OUT_OF_AMMO_PENALTY = - 0.3;
 
@@ -88,6 +89,7 @@ public abstract class Unit extends Force {
 
     public Unit changeMorale(double change) {
         if (type == CAVALRY) change *= CHARGE_ON_CAVALRY;
+        if (type == ARTILLERY) change *= CHARGE_ON_ARTILLERY;
         morale += change;
         if (isSub) superForce.updateMorale(strength, change);
         return this;

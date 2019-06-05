@@ -1,14 +1,14 @@
 package forces;
 
 public class Squadron extends Unit {
-    public static final int MAX_STRENGTH = 300;
+    public static final int MAX_STRENGTH = 180;
     public final static double SPEED = 44;
-    public final static double FOOD_NEED = 1.8;
-    public final static double AMMO_NEED = 0.15;
-    public final static double FOOD_LIMIT = 12;
-    public final static double AMMO_LIMIT = 4;
-    public final static double FIRE = 0.15;
-    public final static double CHARGE = 4;
+    public final static double FOOD_NEED = 1.1;
+    public final static double AMMO_NEED = 0.1;
+    public final static double FOOD_LIMIT = 7;
+    public final static double AMMO_LIMIT = 2.4;
+    public final static double FIRE = 0.1;
+    public final static double CHARGE = 2.4;
 
     public Squadron(Nation nation, Hex hex) {
         this(nation, hex, MAX_STRENGTH);
